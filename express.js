@@ -33,9 +33,11 @@ app.use(express.static('static'))
 
 app.get('/user', handleRequest);
 
+
 app.get('/lessons', handleRequest);
 
 
-app.listen(3000);
+const port = process.env.PORT || 3000
+app.listen(port)
 
 console.log("server running");
