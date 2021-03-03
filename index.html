@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>After School Club</title>
+    <script src="https://unpkg.com/vue"></script>
+    <!--Link to manifest-->
+    <link rel="manifest" crossorigin="use-credentials" href="lsn.json">
+</head>
+
+<body>
+
+    <div id="app">
+        <lessons></lessons>
+        <cart></cart>
+    </div>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service.js');
+        };
+    </script>
+
+    <!--Javascript-->
+    <script>
+        //SFC = put each component into seperate vue files
+        //Name component, then its behaviour is next
+        //Name of component is name of tag
+        const lessons = {
+            //Leave elements in div
+            template: `    
+            <div>
+                <!-- displaying lessons -->
+                <div v-for="array in lessons" style="display: inline-block; padding: 8px; text-align: center">
+                    <ul style="list-style-type: none;">
+                    <div style="border:solid; border-color:lightblue; height:80px; width:auto; padding:8px;">
+                        <li>topic: {{array.topic}}</li>
+                        <li>location: {{array.location}}</li>
+                        <li>price: {{array.price}}</li>
+                        <button>Add to cart</button>
+                    </div>
+                    </ul>
+                </div>
+            </div>`,
+
+            //Make data object a method and put all data here
+            data () {
+                return {
+                    lessons: [
+                    { 'topic': 'math', 'location': 'London', 'price': 100 },
+                    { 'topic': 'math', 'location': 'Liverpool', 'price': 80 },
+                    { 'topic': 'math', 'location': 'Oxford', 'price': 90 },
+                    { 'topic': 'math', 'location': 'Bristol', 'price': 120 }
+                    ],
+                }
+            },
+            methods: {
+                getLessons: function () {
+                    //Fetching data from API
+                    fetch('http://localhost:3000/lessons').then(
+                        function (response) {
+                            response.json().then(
+                                function (json) {
+                                    // save the returned JSON object to 'lessons'
+                                    app.lessons = json;
+                                });
+                        })
+                },
+            },
+            beforeMount() {
+                this.getLessons()
+            }            
+        }
+
+        const cart = {
+            template: `
+            <div>
+                <p style=font-family:sans-serif>Cart:</p>
+                <div v-for="lesson in cart"style="display: inline-block; padding: 8px;">
+                    <ul>
+                    <div style="border:solid; border-color:lightblue;width:auto; padding:8px; list-style-type:none; height: 80px; text-align:center">
+                        <li>topic: {{lesson.topic}}</li>
+                        <li>location: {{lesson.location}}</li>
+                        <li>price: {{lesson.price}}</li>
+                        <button>Remove</button>
+                    </div>
+                    </ul>
+                </div>
+                <button>Checkout</button>
+            </div>`,
+            data () {
+                return{
+                    cart: [{'topic': 'math', 'location': 'Bristol', 'price': 120 }],
+                }
+            }
+        }
+
+        //Setting up Vue
+        let app = new Vue({ //vue instance
+            el: '#app',
+            components: {
+                'lessons': lessons,
+                'cart':cart
+            },
+            data(){
+                return {
+                    cart: []
+                }
+            },
+            methods: {
+                add: function(lesson){
+                    this.cart.push(lesson)
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
