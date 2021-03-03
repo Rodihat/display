@@ -1,0 +1,22 @@
+{
+  "name": "after-school-club",
+  "version": "1.0.0",
+  "description": "",
+  "main": "express.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rodihat/after-school-club.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rodihat/after-school-club/issues"
+  },
+  "homepage": "https://github.com/Rodihat/after-school-club#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
